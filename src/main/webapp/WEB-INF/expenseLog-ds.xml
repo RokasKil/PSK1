@@ -1,0 +1,10 @@
+<datasources>
+    <datasource jndi-name="ExpenseLogDataSource" pool-name="ExpenseLogDataSource">
+        <driver>h2</driver>
+        <connection-url>jdbc:h2:~/h2database/ExpenseLog;AUTO_SERVER=TRUE;</connection-url>
+        <security>
+            <user-name>as</user-name>
+            <password>as</password>
+        </security>
+    </datasource>
+</datasources>
