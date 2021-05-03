@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head/>
+<h:body>
+    <p>Date: #{expenses.expenseGroup.date}</p>
+    <p>Name: #{expenses.expenseGroup.name}</p>
+    <p>Description: #{expenses.expenseGroup.description}</p>
+    <p>Total: #{expenses.expenseGroup.totalCost}</p>
+    <p>Tags: <ui:repeat value="#{expenses.expenseGroup.expenseGroupTags}" var="tag" varStatus="status">
+            <span>#{tag.name}#{status.last?'':', '}</span>
+        </ui:repeat>
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ui:repeat value="#{expenses.expenseGroup.expenses}" var="expense">
+                <tr>
+                    <td>#{expense.name}</td>
+                    <td>#{expense.cost}</td>
+                </tr>
+            </ui:repeat>
+        </tbody>
+    </table>
+
+    <h:form>
+        <h:inputText a:placeholder="name" value="#{expenses.expenseToCreate.name}" required="true" />
+        <h:inputText a:placeholder="cost" value="#{expenses.expenseToCreate.cost}" required="true" />
+        <h:commandButton value="Add expense to groupo" action="#{expenses.createExpense}" >
+            <f:param name="groupId" value="#{expenses.expenseGroup.id}" />
+        </h:commandButton>
+    </h:form>
+    <h:link outcome="index" value="Back"/>
+</h:body>
+</html>

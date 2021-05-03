@@ -14,6 +14,7 @@ public class Expense {
     private Integer id;
 
     @ManyToOne
+    @JoinColumn(name="EXPENSEGROUP_ID")
     private ExpenseGroup expenseGroup;
 
     private String name;
