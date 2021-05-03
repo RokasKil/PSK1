@@ -5,8 +5,8 @@
 <configuration>
     <typeAliases>
         <typeAlias type="lt.rokas.uzd1.mybatis.model.Expense" alias="Expense"/>
-        <typeAlias type="lt.rokas.uzd1.mybatis.model.Expensegroup" alias="ExpenseGroup"/>
-        <typeAlias type="lt.rokas.uzd1.mybatis.model.Expensegrouptag" alias="ExpenseGroupTag"/>
+        <typeAlias type="lt.rokas.uzd1.mybatis.model.ExpenseGroup" alias="ExpenseGroup"/>
+        <typeAlias type="lt.rokas.uzd1.mybatis.model.ExpenseGroupTag" alias="ExpenseGroupTag"/>
     </typeAliases>
     <environments default="development">
         <environment id="development">
@@ -17,8 +17,8 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="mybatis.xml/ExpensegroupMapper.xml"/>
-        <mapper resource="mybatis.xml/ExpensegrouptagMapper.xml"/>
+        <mapper resource="mybatis.xml/ExpenseGroupMapper.xml"/>
+        <mapper resource="mybatis.xml/ExpenseGroupTagMapper.xml"/>
         <mapper resource="mybatis.xml/ExpenseMapper.xml"/>
     </mappers>
 </configuration>

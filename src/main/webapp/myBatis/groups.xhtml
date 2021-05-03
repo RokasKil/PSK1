@@ -15,7 +15,7 @@
                value="#{myBatisExpenseGroups.expenseGroupToCreate.date}" required="required">
             <f:convertDateTime pattern="yyyy-M-d" />
         </input>
-        <h:selectManyListbox value="#{myBatisExpenseGroups.expenseGroupToCreate.expenseGroupTags}" converter="#{MyBatisexpenseGroupTagConverter}" size="4">
+        <h:selectManyListbox value="#{myBatisExpenseGroups.expenseGroupToCreate.expenseGroupTags}" converter="#{myBatisExpenseGroupTagConverter}" size="4">
             <f:selectItems value="#{myBatisExpenseGroups.allExpenseGroupTags}" var="tag" itemLabel="#{tag.name}" itemValue="#{tag}"/>
         </h:selectManyListbox>
         <h:commandButton value="Create new group" action="#{myBatisExpenseGroups.createGroup}" />
@@ -31,9 +31,13 @@
             </tr>
         </thead>
         <tbody>
-            <ui:repeat value="#{expenseGroups.allExpenseGroups}" var="group">
+            <ui:repeat value="#{myBatisExpenseGroups.allExpenseGroups}" var="group">
                 <tr onclick="location.href='expenses.xhtml?groupId=#{group.id}'">
-                    <td>#{group.date}</td>
+                    <td>
+                        <h:outputText value="#{group.date}" >
+                            <f:convertDateTime pattern="yyyy-MM-dd" />
+                        </h:outputText>
+                    </td>
                     <td>#{group.name}</td>
                     <td>#{group.description}</td>
                     <td>#{group.totalCost != null ? group.totalCost : "0.0"}</td>

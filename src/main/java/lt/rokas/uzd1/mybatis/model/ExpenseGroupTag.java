@@ -2,7 +2,7 @@ package lt.rokas.uzd1.mybatis.model;
 
 import java.util.Objects;
 
-public class Expensegrouptag {
+public class ExpenseGroupTag {
 
     /**
      *
@@ -74,7 +74,7 @@ public class Expensegrouptag {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Expensegrouptag that = (Expensegrouptag) o;
+        ExpenseGroupTag that = (ExpenseGroupTag) o;
         return Objects.equals(id, that.id);
     }
 

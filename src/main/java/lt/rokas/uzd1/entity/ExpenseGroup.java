@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "ExpenseGroup.findAll", query = "select e from ExpenseGroup as e order by e.date ASC")
+        @NamedQuery(name = "ExpenseGroup.findAll", query = "select e from ExpenseGroup as e order by e.date DESC")
 })
 @Getter @Setter
 public class ExpenseGroup {

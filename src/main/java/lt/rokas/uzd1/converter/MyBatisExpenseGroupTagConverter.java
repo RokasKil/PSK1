@@ -1,9 +1,7 @@
 package lt.rokas.uzd1.converter;
 
-import lt.rokas.uzd1.entity.ExpenseGroupTag;
-import lt.rokas.uzd1.mybatis.dao.ExpensegrouptagMapper;
-import lt.rokas.uzd1.mybatis.model.Expensegrouptag;
-import lt.rokas.uzd1.persistence.ExpenseGroupTagDao;
+import lt.rokas.uzd1.mybatis.dao.ExpenseGroupTagMapper;
+import lt.rokas.uzd1.mybatis.model.ExpenseGroupTag;
 
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -14,16 +12,16 @@ import javax.inject.Named;
 @Named
 public class MyBatisExpenseGroupTagConverter implements Converter {
     @Inject
-    private ExpensegrouptagMapper expensegrouptagMapper;
+    private ExpenseGroupTagMapper expenseGroupTagMapper;
 
 
     @Override
     public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String id) {
-        return expensegrouptagMapper.selectByPrimaryKey(Integer.parseInt(id));
+        return expenseGroupTagMapper.selectByPrimaryKey(Integer.parseInt(id));
     }
 
     @Override
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object o) {
-        return ((Expensegrouptag) o).getId().toString();
+        return ((ExpenseGroupTag) o).getId().toString();
     }
 }

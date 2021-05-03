@@ -10,7 +10,7 @@
     <id column="ID" jdbcType="INTEGER" property="id" />
     <result column="COST" jdbcType="DOUBLE" property="cost" />
     <result column="NAME" jdbcType="VARCHAR" property="name" />
-    <result column="EXPENSEGROUP_ID" jdbcType="INTEGER" property="expensegroupId" />
+    <result column="EXPENSEGROUP_ID" jdbcType="INTEGER" property="expenseGroupId" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--
@@ -29,7 +29,7 @@
     -->
     insert into PUBLIC.EXPENSE (COST, NAME, EXPENSEGROUP_ID
       )
-    values (#{cost,jdbcType=DOUBLE}, #{name,jdbcType=VARCHAR}, #{expensegroupId,jdbcType=INTEGER}
+    values (#{cost,jdbcType=DOUBLE}, #{name,jdbcType=VARCHAR}, #{expenseGroupId,jdbcType=INTEGER}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="lt.rokas.uzd1.mybatis.model.Expense">
@@ -41,7 +41,7 @@
     update PUBLIC.EXPENSE
     set COST = #{cost,jdbcType=DOUBLE},
       NAME = #{name,jdbcType=VARCHAR},
-      EXPENSEGROUP_ID = #{expensegroupId,jdbcType=INTEGER}
+      EXPENSEGROUP_ID = #{expenseGroupId,jdbcType=INTEGER}
     where ID = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">

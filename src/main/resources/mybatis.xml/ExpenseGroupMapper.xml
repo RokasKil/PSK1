@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="lt.rokas.uzd1.mybatis.dao.ExpensegroupMapper">
-  <resultMap id="BaseResultMap" type="lt.rokas.uzd1.mybatis.model.Expensegroup">
+<mapper namespace="lt.rokas.uzd1.mybatis.dao.ExpenseGroupMapper">
+  <resultMap id="BaseResultMap" type="lt.rokas.uzd1.mybatis.model.ExpenseGroup">
 
     <id column="ID" jdbcType="INTEGER" property="id" />
     <result column="DATE" jdbcType="DATE" property="date" />
@@ -13,7 +13,7 @@
       <result property="name" column="EXPENSE_NAME" />
       <result property="cost" column="COST" />
     </collection>
-    <collection property="expenseGroupTags" ofType="lt.rokas.uzd1.mybatis.model.Expensegrouptag">
+    <collection property="expenseGroupTags" ofType="lt.rokas.uzd1.mybatis.model.ExpenseGroupTag">
       <id property="id" column="TAG_ID" />
       <result property="name" column="TAG_NAME" />
     </collection>
@@ -23,7 +23,7 @@
     delete from PUBLIC.EXPENSEGROUP
     where ID = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="lt.rokas.uzd1.mybatis.model.Expensegroup" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="lt.rokas.uzd1.mybatis.model.ExpenseGroup" useGeneratedKeys="true">
     <selectKey order="AFTER" keyProperty="id" resultType="integer">
       SELECT scope_identity()
     </selectKey>
@@ -38,7 +38,7 @@
     (EXPENSEGROUPS_ID, EXPENSEGROUPTAGS_ID)
     values(#{group.id}, #{tag.id})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="lt.rokas.uzd1.mybatis.model.Expensegroup">
+  <update id="updateByPrimaryKey" parameterType="lt.rokas.uzd1.mybatis.model.ExpenseGroup">
 
     update PUBLIC.EXPENSEGROUP
     set DATE = #{date,jdbcType=DATE},
@@ -65,7 +65,7 @@
     select
       PUBLIC.EXPENSEGROUP.ID, PUBLIC.EXPENSEGROUP.DATE, PUBLIC.EXPENSEGROUP.DESCRIPTION, PUBLIC.EXPENSEGROUP.NAME,
       PUBLIC.EXPENSE.NAME AS EXPENSE_NAME, PUBLIC.EXPENSE.COST, PUBLIC.EXPENSE.ID AS EXPENSE_ID,
-      (SELECT SUM(e.COST) from EXPENSE e where e.EXPENSEGROUP_ID = #{id,jdbcType=INTEGER}) AS TOTAL_COST,
+      (SELECT SUM(e.COST) from EXPENSE e where e.EXPENSEGROUP_ID = PUBLIC.EXPENSEGROUP.ID) AS TOTAL_COST,
       PUBLIC.EXPENSEGROUPTAG.NAME AS TAG_NAME, PUBLIC.EXPENSEGROUPTAG.ID AS TAG_ID
     from PUBLIC.EXPENSEGROUP
            LEFT OUTER JOIN PUBLIC.EXPENSE
@@ -74,5 +74,6 @@
                            ON PUBLIC.EXPENSEGROUP.ID = BRIDGE.EXPENSEGROUPS_ID
            LEFT OUTER JOIN PUBLIC.EXPENSEGROUPTAG
                            ON PUBLIC.EXPENSEGROUPTAG.ID = BRIDGE.EXPENSEGROUPTAGS_ID
+    order by PUBLIC.EXPENSEGROUP.date DESC
   </select>
 </mapper>

@@ -3,9 +3,9 @@ package lt.rokas.uzd1.usecase;
 import lombok.Getter;
 import lombok.Setter;
 import lt.rokas.uzd1.mybatis.dao.ExpenseMapper;
-import lt.rokas.uzd1.mybatis.dao.ExpensegroupMapper;
+import lt.rokas.uzd1.mybatis.dao.ExpenseGroupMapper;
 import lt.rokas.uzd1.mybatis.model.Expense;
-import lt.rokas.uzd1.mybatis.model.Expensegroup;
+import lt.rokas.uzd1.mybatis.model.ExpenseGroup;
 import lt.rokas.uzd1.persistence.ExpenseDao;
 import lt.rokas.uzd1.persistence.ExpenseGroupDao;
 
@@ -26,14 +26,14 @@ public class MyBatisExpenses {
     ExpenseDao expenseDao;
 
     @Inject
-    ExpensegroupMapper expenseGroupMapper;
+    ExpenseGroupMapper expenseGroupMapper;
 
     @Inject
     ExpenseMapper expenseMapper;
 
     @Getter
     @Setter
-    private Expensegroup expenseGroup;
+    private ExpenseGroup expenseGroup;
 
     @Getter @Setter
     private Expense expenseToCreate = new Expense();
@@ -48,7 +48,7 @@ public class MyBatisExpenses {
 
     @Transactional
     public String createExpense() {
-        expenseToCreate.setExpensegroupId(expenseGroup.getId());
+        expenseToCreate.setExpenseGroupId(expenseGroup.getId());
         expenseMapper.insert(expenseToCreate);
         return "expenses?faces-redirect=true&groupId=" + expenseGroup.getId();
     }

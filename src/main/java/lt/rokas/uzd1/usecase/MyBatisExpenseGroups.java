@@ -2,14 +2,10 @@ package lt.rokas.uzd1.usecase;
 
 import lombok.Getter;
 import lombok.Setter;
-import lt.rokas.uzd1.entity.ExpenseGroup;
-import lt.rokas.uzd1.entity.ExpenseGroupTag;
-import lt.rokas.uzd1.mybatis.dao.ExpensegroupMapper;
-import lt.rokas.uzd1.mybatis.dao.ExpensegrouptagMapper;
-import lt.rokas.uzd1.mybatis.model.Expensegroup;
-import lt.rokas.uzd1.mybatis.model.Expensegrouptag;
-import lt.rokas.uzd1.persistence.ExpenseGroupDao;
-import lt.rokas.uzd1.persistence.ExpenseGroupTagDao;
+import lt.rokas.uzd1.mybatis.dao.ExpenseGroupMapper;
+import lt.rokas.uzd1.mybatis.dao.ExpenseGroupTagMapper;
+import lt.rokas.uzd1.mybatis.model.ExpenseGroup;
+import lt.rokas.uzd1.mybatis.model.ExpenseGroupTag;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
@@ -23,22 +19,22 @@ import java.util.List;
 public class MyBatisExpenseGroups {
 
     @Inject
-    private ExpensegroupMapper expenseGroupMapper;
+    private ExpenseGroupMapper expenseGroupMapper;
 
     @Inject
-    private ExpensegrouptagMapper expensegrouptagMapper;
+    private ExpenseGroupTagMapper expenseGroupTagMapper;
 
     @Getter
     @Setter
-    private List<Expensegroup> allExpenseGroups;
+    private List<ExpenseGroup> allExpenseGroups;
 
     @Getter
     @Setter
-    private Expensegroup expenseGroupToCreate = new Expensegroup();
+    private ExpenseGroup expenseGroupToCreate = new ExpenseGroup();
 
     @Getter
     @Setter
-    private List<Expensegrouptag> allExpenseGroupTags;
+    private List<ExpenseGroupTag> allExpenseGroupTags;
 
     @PostConstruct
     public void init() {
@@ -58,6 +54,6 @@ public class MyBatisExpenseGroups {
     }
 
     private void loadAllExpenseGroupsTags() {
-        this.allExpenseGroupTags = expensegrouptagMapper.selectAll();
+        this.allExpenseGroupTags = expenseGroupTagMapper.selectAll();
     }
 }

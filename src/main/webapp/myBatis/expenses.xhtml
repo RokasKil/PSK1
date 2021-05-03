@@ -7,7 +7,11 @@
       xmlns:f="http://java.sun.com/jsf/core">
 <h:head/>
 <h:body>
-    <p>Date: #{myBatisExpenses.expenseGroup.date}</p>
+    <p>Date:
+        <h:outputText value="#{myBatisExpenses.expenseGroup.date}" >
+            <f:convertDateTime pattern="yyyy-MM-dd" />
+        </h:outputText>
+    </p>
     <p>Name: #{myBatisExpenses.expenseGroup.name}</p>
     <p>Description: #{myBatisExpenses.expenseGroup.description}</p>
     <p>Total: #{myBatisExpenses.expenseGroup.totalCost}</p>
