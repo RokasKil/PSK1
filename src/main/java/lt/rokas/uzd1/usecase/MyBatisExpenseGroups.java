@@ -4,40 +4,41 @@ import lombok.Getter;
 import lombok.Setter;
 import lt.rokas.uzd1.entity.ExpenseGroup;
 import lt.rokas.uzd1.entity.ExpenseGroupTag;
+import lt.rokas.uzd1.mybatis.dao.ExpensegroupMapper;
+import lt.rokas.uzd1.mybatis.dao.ExpensegrouptagMapper;
+import lt.rokas.uzd1.mybatis.model.Expensegroup;
+import lt.rokas.uzd1.mybatis.model.Expensegrouptag;
 import lt.rokas.uzd1.persistence.ExpenseGroupDao;
 import lt.rokas.uzd1.persistence.ExpenseGroupTagDao;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
-import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
+
 @Model
-public class ExpenseGroups {
+public class MyBatisExpenseGroups {
 
     @Inject
-    ExpenseGroupDao expenseGroupDao;
+    private ExpensegroupMapper expenseGroupMapper;
 
     @Inject
-    ExpenseGroupTagDao expenseGroupTagDao;
+    private ExpensegrouptagMapper expensegrouptagMapper;
 
     @Getter
     @Setter
-    private ExpenseGroup expenseGroupToCreate = new ExpenseGroup();
+    private List<Expensegroup> allExpenseGroups;
 
     @Getter
     @Setter
-    private List<ExpenseGroup> allExpenseGroups;
+    private Expensegroup expenseGroupToCreate = new Expensegroup();
 
     @Getter
     @Setter
-    private List<ExpenseGroupTag> allExpenseGroupTags;
+    private List<Expensegrouptag> allExpenseGroupTags;
 
     @PostConstruct
     public void init() {
@@ -45,19 +46,18 @@ public class ExpenseGroups {
         loadAllExpenseGroups();
         loadAllExpenseGroupsTags();
     }
-
     @Transactional
     public String createGroup() {
-        //expenseGroupToCreate.getExpenseGroupTags().stream().forEach(x->System.out.println(x.getId() + " " + x.getName()));
-        expenseGroupDao.persist(expenseGroupToCreate);
-        return "index?faces-redirect=true";
+        expenseGroupMapper.insert(expenseGroupToCreate);
+        expenseGroupToCreate.getExpenseGroupTags().forEach(tag -> expenseGroupMapper.addGroupTag(expenseGroupToCreate, tag));
+        return "/myBatis/groups?faces-redirect=true";
     }
 
     private void loadAllExpenseGroups() {
-        this.allExpenseGroups = expenseGroupDao.loadAll();
+        this.allExpenseGroups = expenseGroupMapper.selectAll();
     }
 
     private void loadAllExpenseGroupsTags() {
-        this.allExpenseGroupTags = expenseGroupTagDao.loadAll();
+        this.allExpenseGroupTags = expensegrouptagMapper.selectAll();
     }
 }

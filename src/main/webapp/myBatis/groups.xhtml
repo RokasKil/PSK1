@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+>
+<h:head/>
+<h:body>
+    <h:form>
+        <h:inputText a:placeholder="name" value="#{myBatisExpenseGroups.expenseGroupToCreate.name}" required="true" />
+        <h:inputText a:placeholder="description" value="#{myBatisExpenseGroups.expenseGroupToCreate.description}"/>
+        <input type="date" jsf:id="date" name="date"
+               value="#{myBatisExpenseGroups.expenseGroupToCreate.date}" required="required">
+            <f:convertDateTime pattern="yyyy-M-d" />
+        </input>
+        <h:selectManyListbox value="#{myBatisExpenseGroups.expenseGroupToCreate.expenseGroupTags}" converter="#{MyBatisexpenseGroupTagConverter}" size="4">
+            <f:selectItems value="#{myBatisExpenseGroups.allExpenseGroupTags}" var="tag" itemLabel="#{tag.name}" itemValue="#{tag}"/>
+        </h:selectManyListbox>
+        <h:commandButton value="Create new group" action="#{myBatisExpenseGroups.createGroup}" />
+    </h:form>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Descripion</th>
+                <th>Total Cost</th>
+                <th>Tags</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ui:repeat value="#{expenseGroups.allExpenseGroups}" var="group">
+                <tr onclick="location.href='expenses.xhtml?groupId=#{group.id}'">
+                    <td>#{group.date}</td>
+                    <td>#{group.name}</td>
+                    <td>#{group.description}</td>
+                    <td>#{group.totalCost != null ? group.totalCost : "0.0"}</td>
+                    <td>
+                        <ui:repeat value="#{group.expenseGroupTags}" var="tag" varStatus="status">
+                            <span>#{tag.name}#{status.last?'':', '}</span>
+                        </ui:repeat>
+                    </td>
+                </tr>
+            </ui:repeat>
+        </tbody>
+    </table>
+</h:body>
+</html>

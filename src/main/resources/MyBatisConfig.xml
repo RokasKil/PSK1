@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias type="lt.rokas.uzd1.mybatis.model.Expense" alias="Expense"/>
+        <typeAlias type="lt.rokas.uzd1.mybatis.model.Expensegroup" alias="ExpenseGroup"/>
+        <typeAlias type="lt.rokas.uzd1.mybatis.model.Expensegrouptag" alias="ExpenseGroupTag"/>
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="MANAGED"/>
+            <dataSource type="JNDI">
+                <property name="data_source" value="ExpenseLogDataSource"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mybatis.xml/ExpensegroupMapper.xml"/>
+        <mapper resource="mybatis.xml/ExpensegrouptagMapper.xml"/>
+        <mapper resource="mybatis.xml/ExpenseMapper.xml"/>
+    </mappers>
+</configuration>

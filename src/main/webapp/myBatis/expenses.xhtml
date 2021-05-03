@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head/>
+<h:body>
+    <p>Date: #{myBatisExpenses.expenseGroup.date}</p>
+    <p>Name: #{myBatisExpenses.expenseGroup.name}</p>
+    <p>Description: #{myBatisExpenses.expenseGroup.description}</p>
+    <p>Total: #{myBatisExpenses.expenseGroup.totalCost}</p>
+    <p>Tags: <ui:repeat value="#{myBatisExpenses.expenseGroup.expenseGroupTags}" var="tag" varStatus="status">
+            <span>#{tag.name}#{status.last?'':', '}</span>
+        </ui:repeat>
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ui:repeat value="#{myBatisExpenses.expenseGroup.expenses}" var="expense">
+                <tr>
+                    <td>#{expense.name}</td>
+                    <td>#{expense.cost}</td>
+                </tr>
+            </ui:repeat>
+        </tbody>
+    </table>
+
+    <h:form>
+        <h:inputText a:placeholder="name" value="#{myBatisExpenses.expenseToCreate.name}" required="true" />
+        <h:inputText a:placeholder="cost" value="#{myBatisExpenses.expenseToCreate.cost}" required="true" />
+        <h:commandButton value="Add expense to groups" action="#{myBatisExpenses.createExpense}" >
+            <f:param name="groupId" value="#{myBatisExpenses.expenseGroup.id}" />
+        </h:commandButton>
+    </h:form>
+    <h:link outcome="groups" value="Back"/>
+</h:body>
+</html>
