@@ -46,7 +46,7 @@ public class MyBatisExpenseGroups {
     public String createGroup() {
         expenseGroupMapper.insert(expenseGroupToCreate);
         expenseGroupToCreate.getExpenseGroupTags().forEach(tag -> expenseGroupMapper.addGroupTag(expenseGroupToCreate, tag));
-        return "/myBatis/groups?faces-redirect=true";
+        return "expenses?faces-redirect=true&groupId=" + expenseGroupToCreate.getId();
     }
 
     private void loadAllExpenseGroups() {

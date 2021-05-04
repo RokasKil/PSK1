@@ -50,7 +50,7 @@ public class ExpenseGroups {
     public String createGroup() {
         //expenseGroupToCreate.getExpenseGroupTags().stream().forEach(x->System.out.println(x.getId() + " " + x.getName()));
         expenseGroupDao.persist(expenseGroupToCreate);
-        return "index?faces-redirect=true";
+        return "expenses?faces-redirect=true&groupId=" + expenseGroupToCreate.getId();
     }
 
     private void loadAllExpenseGroups() {
