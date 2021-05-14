@@ -36,4 +36,7 @@ public class ExpenseGroup {
 
     @Formula(value = "(Select SUM(e.cost) from Expense e where e.expenseGroup_ID = id)")
     private Double totalCost;
+
+    @Version
+    private Integer version;
 }

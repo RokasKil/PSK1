@@ -8,7 +8,7 @@
 <h:head/>
 <h:body>
     <p>Date:
-        <h:outputText value="#{myBatisExpenses.expenseGroup.date}" >
+        <h:outputText value="#{expenses.expenseGroup.date}" >
             <f:convertDateTime pattern="yyyy-MM-dd" />
         </h:outputText>
     </p>
@@ -19,6 +19,13 @@
             <span>#{tag.name}#{status.last?'':', '}</span>
         </ui:repeat>
     </p>
+    <h:form>
+        <h:inputText a:placeholder="name" value="#{expenses.expenseGroup.name}" required="true" />
+        <h:inputText a:placeholder="description" value="#{expenses.expenseGroup.description}"/>
+        <h:commandButton value="Update group" action="#{expenses.updateGroup}" >
+            <f:param name="groupId" value="#{expenses.expenseGroup.id}" />
+        </h:commandButton>
+    </h:form>
     <table>
         <thead>
             <tr>
@@ -39,7 +46,7 @@
     <h:form>
         <h:inputText a:placeholder="name" value="#{expenses.expenseToCreate.name}" required="true" />
         <h:inputText a:placeholder="cost" value="#{expenses.expenseToCreate.cost}" required="true" />
-        <h:commandButton value="Add expense to groupo" action="#{expenses.createExpense}" >
+        <h:commandButton value="Add expense to group" action="#{expenses.createExpense}" >
             <f:param name="groupId" value="#{expenses.expenseGroup.id}" />
         </h:commandButton>
     </h:form>

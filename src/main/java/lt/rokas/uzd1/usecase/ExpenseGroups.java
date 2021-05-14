@@ -60,4 +60,12 @@ public class ExpenseGroups {
     private void loadAllExpenseGroupsTags() {
         this.allExpenseGroupTags = expenseGroupTagDao.loadAll();
     }
+
+    public Double getAverageCost() {
+        Double cost = 0.0;
+        for (ExpenseGroup allExpenseGroup : allExpenseGroups) {
+            cost += (allExpenseGroup.getTotalCost() == null ? 0 : allExpenseGroup.getTotalCost());
+        }
+        return cost / allExpenseGroups.size();
+    }
 }
