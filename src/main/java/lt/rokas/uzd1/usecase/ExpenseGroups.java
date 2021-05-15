@@ -6,20 +6,28 @@ import lt.rokas.uzd1.entity.ExpenseGroup;
 import lt.rokas.uzd1.entity.ExpenseGroupTag;
 import lt.rokas.uzd1.persistence.ExpenseGroupDao;
 import lt.rokas.uzd1.persistence.ExpenseGroupTagDao;
+import lt.rokas.uzd1.service.AverageExpenseGroupCost;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
+import javax.ejb.AsyncResult;
+import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
+import javax.faces.FacesException;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
-@Model
-public class ExpenseGroups {
+@Named
+@ViewScoped
+public class ExpenseGroups implements Serializable   {
 
     @Inject
     ExpenseGroupDao expenseGroupDao;
@@ -38,6 +46,11 @@ public class ExpenseGroups {
     @Getter
     @Setter
     private List<ExpenseGroupTag> allExpenseGroupTags;
+
+    @EJB
+    AverageExpenseGroupCost averageExpenseGroupCost;
+
+    Future<Double> averageCost;
 
     @PostConstruct
     public void init() {
@@ -61,11 +74,37 @@ public class ExpenseGroups {
         this.allExpenseGroupTags = expenseGroupTagDao.loadAll();
     }
 
-    public Double getAverageCost() {
-        Double cost = 0.0;
-        for (ExpenseGroup allExpenseGroup : allExpenseGroups) {
-            cost += (allExpenseGroup.getTotalCost() == null ? 0 : allExpenseGroup.getTotalCost());
+    public String getAverageCost() {
+        System.out.println("Waiting for cost");
+        try {
+            if (averageCost == null) {
+                return "Not calculated";
+            }
+            else if (!averageCost.isDone()) {
+                return "Calculating";
+            }
+            return averageCost.get().toString();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new FacesException(e);
+        } catch (ExecutionException e) {
+            throw new FacesException(e);
         }
-        return cost / allExpenseGroups.size();
+    }
+
+    public Boolean getAverageCostDone() {
+        return averageCost != null &&  averageCost.isDone();
+    }
+    public void waitForAverageCost(AjaxBehaviorEvent event) {
+        if (this.averageCost == null)
+            this.averageCost = averageExpenseGroupCost.getAverageCost();
+        try {
+            averageCost.get();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new FacesException(e);
+        } catch (ExecutionException e) {
+            throw new FacesException(e);
+        }
     }
 }

@@ -20,7 +20,12 @@
         </h:selectManyListbox>
         <h:commandButton value="Create new group" action="#{expenseGroups.createGroup}" />
     </h:form>
-    <p>Average cost: #{expenseGroups.averageCost}</p>
+    <h:form>
+        <p>Average cost: <h:outputText id="averageCost" value="#{expenseGroups.averageCost}"/></p>
+        <h:commandButton disabled="#{expenseGroups.averageCostDone}" value="Get average cost">
+            <f:ajax render="averageCost" listener="#{expenseGroups.waitForAverageCost}" event="click"/>
+        </h:commandButton>
+    </h:form>
     <table>
         <thead>
             <tr>
