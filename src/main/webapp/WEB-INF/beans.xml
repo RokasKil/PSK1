@@ -10,4 +10,7 @@
     <!--<alternatives>
         <class>lt.rokas.uzd1.service.FastAverageExpenseGroupCostImpl</class>
     </alternatives>-->
+    <decorators>
+        <class>lt.rokas.uzd1.decorator.LoggingDecorator</class>
+    </decorators>
 </beans>
