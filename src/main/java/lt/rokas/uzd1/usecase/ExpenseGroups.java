@@ -4,16 +4,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lt.rokas.uzd1.entity.ExpenseGroup;
 import lt.rokas.uzd1.entity.ExpenseGroupTag;
+import lt.rokas.uzd1.interceptor.LoggedInvocation;
 import lt.rokas.uzd1.persistence.ExpenseGroupDao;
 import lt.rokas.uzd1.persistence.ExpenseGroupTagDao;
 import lt.rokas.uzd1.service.AverageExpenseGroupCost;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.AsyncResult;
 import javax.ejb.EJB;
-import javax.enterprise.inject.Model;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.FacesException;
-import javax.faces.event.AbortProcessingException;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -22,11 +21,12 @@ import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 @Named
-@ViewScoped
+@SessionScoped
 public class ExpenseGroups implements Serializable   {
 
     @Inject
@@ -47,7 +47,7 @@ public class ExpenseGroups implements Serializable   {
     @Setter
     private List<ExpenseGroupTag> allExpenseGroupTags;
 
-    @EJB
+    @Inject
     AverageExpenseGroupCost averageExpenseGroupCost;
 
     Future<Double> averageCost;
@@ -60,6 +60,7 @@ public class ExpenseGroups implements Serializable   {
     }
 
     @Transactional
+    @LoggedInvocation
     public String createGroup() {
         //expenseGroupToCreate.getExpenseGroupTags().stream().forEach(x->System.out.println(x.getId() + " " + x.getName()));
         expenseGroupDao.persist(expenseGroupToCreate);
@@ -97,7 +98,7 @@ public class ExpenseGroups implements Serializable   {
     }
     public void waitForAverageCost(AjaxBehaviorEvent event) {
         if (this.averageCost == null)
-            this.averageCost = averageExpenseGroupCost.getAverageCost();
+            this.averageCost = CompletableFuture.supplyAsync(() -> averageExpenseGroupCost.getAverageCost(allExpenseGroups));
         try {
             averageCost.get();
         } catch (InterruptedException e) {

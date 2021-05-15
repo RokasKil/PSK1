@@ -5,6 +5,7 @@ import lombok.Setter;
 import lt.rokas.uzd1.entity.Expense;
 import lt.rokas.uzd1.entity.ExpenseGroup;
 import lt.rokas.uzd1.entity.ExpenseGroupTag;
+import lt.rokas.uzd1.interceptor.LoggedInvocation;
 import lt.rokas.uzd1.persistence.ExpenseDao;
 import lt.rokas.uzd1.persistence.ExpenseGroupDao;
 import lt.rokas.uzd1.persistence.ExpenseGroupTagDao;
@@ -48,6 +49,7 @@ public class Expenses implements Serializable {
     }
 
     @Transactional
+    @LoggedInvocation
     public String createExpense() {
         expenseToCreate.setExpenseGroup(expenseGroup);
         expenseDao.persist(expenseToCreate);
@@ -55,6 +57,7 @@ public class Expenses implements Serializable {
     }
 
     @Transactional
+    @LoggedInvocation
     public String updateGroup() {
         try {
             expenseGroupDao.update(expenseGroup);
