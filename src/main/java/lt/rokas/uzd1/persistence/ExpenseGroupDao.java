@@ -1,6 +1,7 @@
 package lt.rokas.uzd1.persistence;
 
 import lt.rokas.uzd1.entity.ExpenseGroup;
+import lt.rokas.uzd1.entity.ExpenseGroupTag;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -25,6 +26,13 @@ public class ExpenseGroupDao {
         return em.merge(group);
     }
 
+    public void refresh(ExpenseGroup group){
+        em.refresh(group);
+    }
+
+    public void flush() {
+        em.flush();
+    }
     public List<ExpenseGroup> loadAll() {
         return em.createNamedQuery("ExpenseGroup.findAll", ExpenseGroup.class).getResultList();
     }

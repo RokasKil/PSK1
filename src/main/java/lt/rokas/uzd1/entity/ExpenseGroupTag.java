@@ -10,7 +10,8 @@ import java.util.Objects;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "ExpenseGroupTag.findAll", query = "select tag from ExpenseGroupTag as tag")
+        @NamedQuery(name = "ExpenseGroupTag.findAll", query = "select tag from ExpenseGroupTag as tag"),
+        @NamedQuery(name = "ExpenseGroupTag.findByName", query = "select tag from ExpenseGroupTag as tag where tag.name = :name")
 })
 @Getter @Setter
 public class ExpenseGroupTag {

@@ -22,6 +22,13 @@ public class ExpenseGroupTagDao {
     public ExpenseGroupTag findOne(Integer id) {
         return em.find(ExpenseGroupTag.class, id);
     }
+
+    public ExpenseGroupTag findOneByName(String name) {
+        return em.createNamedQuery("ExpenseGroupTag.findByName", ExpenseGroupTag.class)
+                .setParameter("name", name)
+                .getSingleResult();
+    }
+
     public ExpenseGroupTag getReference(Integer id) {
         return em.getReference(ExpenseGroupTag.class, id);
     }
