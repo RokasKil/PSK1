@@ -9,8 +9,8 @@
     </interceptors>
     <!--<alternatives>
         <class>lt.rokas.uzd1.service.FastAverageExpenseGroupCostImpl</class>
-    </alternatives>-->
+    </alternatives>
     <decorators>
         <class>lt.rokas.uzd1.decorator.LoggingDecorator</class>
-    </decorators>
+    </decorators>-->
 </beans>

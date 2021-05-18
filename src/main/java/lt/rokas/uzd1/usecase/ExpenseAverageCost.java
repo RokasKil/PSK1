@@ -7,6 +7,7 @@ import lt.rokas.uzd1.persistence.ExpenseGroupDao;
 import lt.rokas.uzd1.persistence.ExpenseGroupTagDao;
 import lt.rokas.uzd1.service.AverageExpenseGroupCost;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.FacesException;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -14,6 +15,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -21,15 +23,15 @@ import java.util.concurrent.Future;
 
 @Named
 @SessionScoped
-public class ExpenseAverageCost  implements Serializable {
+public class ExpenseAverageCost implements Serializable {
 
     @Inject
-    AverageExpenseGroupCost averageExpenseGroupCost;
+    private AverageExpenseGroupCost averageExpenseGroupCost;
 
-    Future<Double> averageCost;
+    private Future<Double> averageCost;
 
     @Inject
-    ExpenseGroupDao expenseGroupDao;
+    private ExpenseGroupDao expenseGroupDao;
 
     public String getAverageCost() {
         System.out.println("Waiting for cost");
@@ -54,8 +56,10 @@ public class ExpenseAverageCost  implements Serializable {
     }
 
     public void waitForAverageCost(AjaxBehaviorEvent event) {
-        if (this.averageCost == null)
-            this.averageCost = CompletableFuture.supplyAsync(() -> averageExpenseGroupCost.getAverageCost(expenseGroupDao.loadAll()));
+        if (this.averageCost == null) {
+            final List<ExpenseGroup> allExpenseGroups = expenseGroupDao.loadAll();
+            this.averageCost = CompletableFuture.supplyAsync(() -> averageExpenseGroupCost.getAverageCost(allExpenseGroups));
+        }
         try {
             averageCost.get();
         } catch (InterruptedException e) {
