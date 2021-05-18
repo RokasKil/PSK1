@@ -21,9 +21,9 @@
         <h:commandButton value="Create new group" action="#{expenseGroups.createGroup}" />
     </h:form>
     <h:form>
-        <p>Average cost: <h:outputText id="averageCost" value="#{expenseGroups.averageCost}"/></p>
-        <h:commandButton disabled="#{expenseGroups.averageCostDone}" value="Get average cost">
-            <f:ajax render="averageCost" listener="#{expenseGroups.waitForAverageCost}" event="click"/>
+        <p>Average cost: <h:outputText id="averageCost" value="#{expenseAverageCost.averageCost}"/></p>
+        <h:commandButton disabled="#{expenseAverageCost.averageCostDone}" value="Get average cost">
+            <f:ajax render="averageCost" listener="#{expenseAverageCost.waitForAverageCost}" event="click"/>
         </h:commandButton>
     </h:form>
     <table>

@@ -26,8 +26,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 @Named
-@SessionScoped
-public class ExpenseGroups implements Serializable   {
+@ViewScoped
+public class ExpenseGroups implements Serializable {
 
     @Inject
     ExpenseGroupDao expenseGroupDao;
@@ -46,11 +46,6 @@ public class ExpenseGroups implements Serializable   {
     @Getter
     @Setter
     private List<ExpenseGroupTag> allExpenseGroupTags;
-
-    @Inject
-    AverageExpenseGroupCost averageExpenseGroupCost;
-
-    Future<Double> averageCost;
 
     @PostConstruct
     public void init() {
@@ -75,37 +70,4 @@ public class ExpenseGroups implements Serializable   {
         this.allExpenseGroupTags = expenseGroupTagDao.loadAll();
     }
 
-    public String getAverageCost() {
-        System.out.println("Waiting for cost");
-        try {
-            if (averageCost == null) {
-                return "Not calculated";
-            }
-            else if (!averageCost.isDone()) {
-                return "Calculating";
-            }
-            return averageCost.get().toString();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new FacesException(e);
-        } catch (ExecutionException e) {
-            throw new FacesException(e);
-        }
-    }
-
-    public Boolean getAverageCostDone() {
-        return averageCost != null &&  averageCost.isDone();
-    }
-    public void waitForAverageCost(AjaxBehaviorEvent event) {
-        if (this.averageCost == null)
-            this.averageCost = CompletableFuture.supplyAsync(() -> averageExpenseGroupCost.getAverageCost(allExpenseGroups));
-        try {
-            averageCost.get();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new FacesException(e);
-        } catch (ExecutionException e) {
-            throw new FacesException(e);
-        }
-    }
 }
