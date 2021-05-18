@@ -25,6 +25,7 @@
         <h:commandButton value="Update group" action="#{expenses.updateGroup}" >
             <f:param name="groupId" value="#{expenses.expenseGroup.id}" />
         </h:commandButton>
+        <br></br>
         <h:outputText value="Value was already modified by other user. If you want to override it - try again" rendered="#{param['error'] == 'optimistic-lock-exception'}" />
     </h:form>
     <table>
